@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function EditArt(props) {
   const { id } = useParams();
-  const navigate = useNavigate();
   const artworks = props.artWorks;
   console.log(id);
 
@@ -18,7 +17,6 @@ function EditArt(props) {
     }
   }, [artwork]);
 
-  // handling form data change
   const handleChange = (e) => {
     setEditForm({
       ...editForm,
@@ -26,7 +24,6 @@ function EditArt(props) {
     });
   };
 
-  // handling submit event for edit form
   const handleUpdate = (e) => {
     e.preventDefault();
     props.updateArtWork(editForm, artwork._id);
