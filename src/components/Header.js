@@ -1,11 +1,10 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 function Header() {
   const userToken = localStorage.getItem("token");
   const data = userToken ? jwt_decode(userToken) : null;
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -14,31 +13,46 @@ function Header() {
   };
 
   return (
-    <nav className="navbar">
-      <ul>
-        <Link to="/index">
-          <li>Home</li>
-        </Link>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light ml-3">
+      <Link className="navbar-brand" to="/index">
+        CuratedExpressions
+      </Link>
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <Link className="nav-link" to="/index">
+            Home
+          </Link>
+        </li>
         {data ? (
           <>
-            <Link to="/dashboard">
-              <li>Hello {data.user.lastname}</li>
-            </Link>
-            <Link to="/create">
-              <li>Upload Artwork</li>
-            </Link>
-            <Link>
-              <li onClick={handleLogout}>Logout</li>
-            </Link>
+            <li className="nav-item">
+              <Link className="nav-link" to="/dashboard">
+                Hello {data.user.firstname}!
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/create">
+                Upload Artwork
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" onClick={handleLogout}>
+                Logout
+              </Link>
+            </li>
           </>
         ) : (
           <>
-            <Link to="/login">
-              <li>Login</li>
-            </Link>
-            <Link to="/signup">
-              <li>Signup</li>
-            </Link>
+            <li className="nav-item">
+              <Link className="nav-link" to="/login">
+                Login
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/signup">
+                Signup
+              </Link>
+            </li>
           </>
         )}
       </ul>

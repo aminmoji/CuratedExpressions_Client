@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import storage from "../firebase";
 import jwt_decode from "jwt-decode";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 function CreateArt(props) {
   const userToken = localStorage.getItem("token");
@@ -10,28 +12,51 @@ function CreateArt(props) {
     price: "",
     medium: "",
     qty: "",
-    image: "",
+    images: [],
     tags: "",
-    user: data.user._id,
+    user: data?.user?._id,
   });
+
   const handleChange = (event) => {
-    setNewForm({ ...newForm, [event.target.name]: event.target.value });
+    if (event.target.name === "images") {
+      const imageFiles = Array.from(event.target.files);
+      setNewForm({ ...newForm, images: imageFiles });
+    } else {
+      setNewForm({ ...newForm, [event.target.name]: event.target.value });
+    }
   };
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    props.createArtworks(newForm);
+    const imageUrls = await uploadImages(newForm.images);
+    console.log(imageUrls);
+    const artworkData = { ...newForm, images: imageUrls };
+    props.createArtworks(artworkData);
     setNewForm({
       title: "",
       description: "",
       price: "",
       medium: "",
       qty: "",
-      image: "",
+      images: [],
       tags: "",
-      user: data.user._id,
+      user: data?.user?._id,
     });
-    alert("Artwork Successfully Uploaded!");
+    // alert("Artwork Successfully Uploaded!");
     window.location.href = "/index";
+  };
+
+  const uploadImages = async (images) => {
+    const imageUrls = [];
+    for (const image of images) {
+      const storageRef = ref(storage, `/images/${image.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+      const snapshot = await uploadTask;
+      const url = await getDownloadURL(snapshot.ref);
+      console.log(url);
+      imageUrls.push(url);
+    }
+    return imageUrls;
   };
 
   return (
@@ -72,13 +97,7 @@ function CreateArt(props) {
           placeholder="Quantity"
           onChange={handleChange}
         />
-        <input
-          type="text"
-          value={newForm.image}
-          name="image"
-          placeholder="Image URL"
-          onChange={handleChange}
-        />
+        <input type="file" multiple name="images" onChange={handleChange} />
         <input
           type="text"
           value={newForm.tags}

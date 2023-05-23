@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const loginUser = async (e) => {
@@ -22,7 +21,7 @@ function Login() {
       if (data.user) {
         localStorage.setItem("token", data.user);
         alert("Login Successful!");
-        navigate("/index");
+        window.location.href = "/index";
       } else {
         alert("Please Check your Username and Password");
       }

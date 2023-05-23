@@ -19,13 +19,36 @@ function Dashboard() {
   }, []);
 
   const loaded = () => {
-    return userArtworks.map((artwork) => (
-      <div key={artwork._id} className="artwork">
-        <h1>{artwork.title}</h1>
-        <img src={artwork.image} alt={artwork.title} />
-        <h3>{artwork.medium}</h3>
+    return (
+      <div className="container">
+        <div className="row">
+          <h3>My Artworks</h3>
+        </div>
+        <div className="row">
+          {userArtworks.map((artwork) => (
+            <div
+              key={artwork._id}
+              className="col-md-2 card index"
+              style={{ width: "18rem" }}>
+              <div className="card-body d-flex flex-column">
+                <img
+                  src={artwork.images}
+                  className="card-img-top mb-auto"
+                  alt={artwork.title}
+                />
+                <div className="mt-auto">
+                  <h5 className="card-title">{artwork.title}</h5>
+                  <p className="card-text">{artwork.price}</p>
+                  <a href={`/edit/${artwork._id}`} className="btn btn-primary">
+                    More Info
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    ));
+    );
   };
 
   const loading = () => {
