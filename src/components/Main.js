@@ -12,8 +12,8 @@ import EditArt from "../pages/EditArt";
 const Main = () => {
   const [artWorks, setArtWorks] = useState(null);
 
-  const URL = "http://localhost:4000/";
-  const URL_UPLOAD = "http://localhost:4000/artwork/";
+  const URL = "https://curatedexpressions.onrender.com/";
+  const URL_UPLOAD = "https://curatedexpressions.onrender.com/artwork/";
 
   const getArtworks = async () => {
     const response = await fetch(URL);

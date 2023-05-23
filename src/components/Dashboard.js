@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 
 function Dashboard() {
-  const URL = "http://localhost:4000/user/";
+  const URL = "https://curatedexpressions.onrender.com/user/";
   const [userArtworks, setUserArtworks] = useState(null);
   const userToken = localStorage.getItem("token");
   const data = userToken ? jwt_decode(userToken) : null;

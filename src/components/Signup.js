@@ -12,20 +12,23 @@ function Signup() {
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:4000/signup/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          firstname,
-          lastname,
-          website,
-          phone,
-        }),
-      });
+      const response = await fetch(
+        "https://curatedexpressions.onrender.com/signup/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            firstname,
+            lastname,
+            website,
+            phone,
+          }),
+        }
+      );
       const data = await response.json();
       console.log(data);
     } catch (e) {
