@@ -53,6 +53,7 @@ const Main = () => {
 
   return (
     <Routes>
+      <Route exact path="/" element={<Index artWorks={artWorks} />} />
       <Route exact path="/index" element={<Index artWorks={artWorks} />} />
       <Route exact path="/signup" element={<Signup />} />
       <Route exact path="/login" element={<Login />} />
