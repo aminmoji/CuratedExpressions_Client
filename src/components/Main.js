@@ -49,7 +49,7 @@ const Main = () => {
     getArtworks();
   };
 
-  useEffect(() => getArtworks, []);
+  useEffect(() => getArtworks(), []);
 
   return (
     <Routes>
