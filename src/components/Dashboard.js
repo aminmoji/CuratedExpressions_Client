@@ -6,17 +6,21 @@ function Dashboard() {
   const [userArtworks, setUserArtworks] = useState(null);
   const userToken = localStorage.getItem("token");
   const data = userToken ? jwt_decode(userToken) : null;
-
-  const getUserArtWorks = async () => {
-    const id = data.user._id;
-    const response = await fetch(URL + id);
-    const works = await response.json();
-    setUserArtworks(works);
-  };
+  const userId = data?.user?._id;
 
   useEffect(() => {
+    if (!userId) {
+      return;
+    }
+
+    const getUserArtWorks = async () => {
+      const response = await fetch(URL + userId);
+      const works = await response.json();
+      setUserArtworks(works);
+    };
+
     getUserArtWorks();
-  }, []);
+  }, [userId]);
 
   const loaded = () => {
     return (

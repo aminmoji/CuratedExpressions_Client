@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# Curated Expressions — Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React frontend for **Curated Expressions**, a full-stack art marketplace project built during boot camp in 2023.
 
-## Available Scripts
+This repository is kept close to the original implementation. The documentation and repository hygiene have been cleaned up, but the project has not been rewritten to make it look newer than it is.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Browse artwork listings
+- View individual artwork details
+- User signup and login
+- User dashboard
+- Create, edit, and delete artwork listings
+- Upload multiple artwork images to Firebase Storage
+- Store login state with a JWT returned by the backend
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React 18
+- React Router
+- React Bootstrap
+- Firebase Storage
+- JavaScript
+- JWT decoding
+- REST API backend
 
-### `npm test`
+## Related repository
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Backend API:
 
-### `npm run build`
+https://github.com/aminmoji/CuratedExpressions_Server
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Local setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git clone https://github.com/aminmoji/CuratedExpressions_Client.git
+cd CuratedExpressions_Client
+npm install
+cp .env.example .env
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Fill in the Firebase values in `.env` before testing image uploads.
 
-### `npm run eject`
+The original frontend is configured to call the Curated Expressions backend from `src/components/Main.js` and related components.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Environment variables
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+See `.env.example`:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```text
+REACT_APP_API_KEY
+REACT_APP_AUTH_DOMAIN
+REACT_APP_PROJECT_ID
+REACT_APP_STORAGE_BUCKET
+REACT_APP_MESSAGING_SENDER_ID
+REACT_APP_APP_ID
+REACT_APP_BUCKET_URL
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Project status
 
-## Learn More
+Historical portfolio / learning project.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The project reflects the stack and implementation used when it was originally built. Future fixes should focus on correctness, security, and maintainability rather than disguising the project's age.

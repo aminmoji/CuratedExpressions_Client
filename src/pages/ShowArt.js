@@ -1,10 +1,8 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 function ShowArt(props) {
   const { id } = useParams();
-  const navigate = useNavigate();
   const artworks = props.artWorks;
   console.log(id);
 
