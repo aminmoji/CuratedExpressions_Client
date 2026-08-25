@@ -1,65 +1,45 @@
-# Curated Expressions — Client
+# Curated Expressions
 
-React frontend for **Curated Expressions**, a full-stack art marketplace project built during boot camp in 2023.
+A full-stack art marketplace for independent artists. Visitors can browse a
+public collection, while verified artists can create a profile, publish work,
+upload images, and manage their listings.
 
-This repository is kept close to the original implementation. The documentation and repository hygiene have been cleaned up, but the project has not been rewritten to make it look newer than it is.
+## Stack
 
-## Features
+- Next.js App Router through Vinext
+- Cloudflare Workers and Workers Assets
+- Cloudflare D1 for artwork and artist profiles
+- Cloudflare R2 for uploaded artwork images
+- Firebase Authentication with email verification and Google sign-in
+- Drizzle ORM
 
-- Browse artwork listings
-- View individual artwork details
-- User signup and login
-- User dashboard
-- Create, edit, and delete artwork listings
-- Upload multiple artwork images to Firebase Storage
-- Store login state with a JWT returned by the backend
-
-## Tech stack
-
-- React 18
-- React Router
-- React Bootstrap
-- Firebase Storage
-- JavaScript
-- JWT decoding
-- REST API backend
-
-## Related repository
-
-Backend API:
-
-https://github.com/aminmoji/CuratedExpressions_Server
-
-## Local setup
+## Local development
 
 ```bash
-git clone https://github.com/aminmoji/CuratedExpressions_Client.git
-cd CuratedExpressions_Client
-npm install
-cp .env.example .env
-npm start
+npm ci
+cp .dev.vars.example .dev.vars
+npm run dev
 ```
 
-Fill in the Firebase values in `.env` before testing image uploads.
+Fill in the Firebase web configuration in `.dev.vars`. Local D1 and R2 data is
+simulated by Wrangler.
 
-The original frontend is configured to call the Curated Expressions backend from `src/components/Main.js` and related components.
+## Validation
 
-## Environment variables
-
-See `.env.example`:
-
-```text
-REACT_APP_API_KEY
-REACT_APP_AUTH_DOMAIN
-REACT_APP_PROJECT_ID
-REACT_APP_STORAGE_BUCKET
-REACT_APP_MESSAGING_SENDER_ID
-REACT_APP_APP_ID
-REACT_APP_BUCKET_URL
+```bash
+npm run lint
+npm test
+npm run deploy:check
 ```
 
-## Project status
+## Deployment
 
-Historical portfolio / learning project.
+The production Worker is connected to this repository with Cloudflare Workers
+Builds. Pushes to the production branch build and deploy automatically.
 
-The project reflects the stack and implementation used when it was originally built. Future fixes should focus on correctness, security, and maintainability rather than disguising the project's age.
+Build command: `npm run build`
+
+Deploy command: `npm run deploy`
+
+Wrangler automatically provisions the D1 and R2 bindings on the first deploy.
+The deploy script also applies pending D1 migrations.

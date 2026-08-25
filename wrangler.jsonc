@@ -1,0 +1,34 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "curated-expressions",
+  "main": "vinext/server/app-router-entry",
+  "compatibility_date": "2026-08-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "dist/client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "migrations_dir": "drizzle"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "BUCKET"
+    }
+  ],
+  "vars": {
+    "FIREBASE_API_KEY": "AIzaSyCgK69fUBOQ-XkA6j9qeuVpQ7K6OX-DNFY",
+    "FIREBASE_AUTH_DOMAIN": "curatedexpressions-b2d42.firebaseapp.com",
+    "FIREBASE_PROJECT_ID": "curatedexpressions-b2d42",
+    "FIREBASE_APP_ID": "1:733207874420:web:903425d7d051a1a51bfa21",
+    "FIREBASE_MESSAGING_SENDER_ID": "733207874420"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}

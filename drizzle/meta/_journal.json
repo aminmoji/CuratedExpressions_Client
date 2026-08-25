@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1787659755145,
+      "tag": "0000_new_liz_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1787660525263,
+      "tag": "0001_funny_the_professor",
+      "breakpoints": true
+    }
+  ]
+}
