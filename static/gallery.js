@@ -2,8 +2,8 @@ import {
   collection,
   getDocs,
   limit,
-  orderBy,
   query,
+  where,
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 import { db } from "./firebase.js";
 import { featuredWorks, formatCad, path } from "./common.js";
@@ -57,8 +57,11 @@ function render(works) {
 render(featuredWorks);
 
 try {
-  const snapshot = await getDocs(query(collection(db, "artworks"), orderBy("createdAt", "desc"), limit(12)));
-  const live = snapshot.docs.map((document) => ({ id: document.id, ...document.data() }));
+  const snapshot = await getDocs(query(collection(db, "artworks"), where("status", "==", "approved"), limit(24)));
+  const live = snapshot.docs
+    .map((document) => ({ id: document.id, ...document.data() }))
+    .sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0))
+    .slice(0, 12);
   const liveSlugs = new Set(live.map((work) => work.slug));
   render([...live, ...featuredWorks.filter((work) => !liveSlugs.has(work.slug))]);
 } catch {
