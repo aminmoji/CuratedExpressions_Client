@@ -4,6 +4,7 @@ import {
   getAuth,
   setPersistence,
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -17,6 +18,11 @@ const firebaseConfig = {
 };
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+
+export const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider("6LexzZgtAAAAAAM-nIHBzHAICrb7AQY0gjZakP-o"),
+  isTokenAutoRefreshEnabled: true,
+});
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
@@ -41,7 +47,7 @@ export function firebaseErrorMessage(error) {
     "auth/popup-closed-by-user": "The sign-in window was closed before finishing.",
     "auth/too-many-requests": "Too many attempts. Wait a moment and try again.",
     "auth/unauthorized-domain": "This website has not been authorized in Firebase yet.",
-    "auth/weak-password": "Use a stronger password with at least 8 characters.",
+    "auth/weak-password": "Use a stronger password with at least 12 characters.",
     "permission-denied": "This action is not permitted. Refresh the page and try again.",
   };
   return messages[error?.code] || error?.message || "Unable to continue. Please try again.";
