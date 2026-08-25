@@ -1,0 +1,52 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function verified() {
+      return signedIn() && request.auth.token.email_verified == true;
+    }
+
+    match /artist_profiles/{userId} {
+      allow read: if signedIn() && request.auth.uid == userId;
+      allow create, update: if verified()
+        && request.auth.uid == userId
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() >= 2
+        && request.resource.data.displayName.size() <= 100
+        && request.resource.data.bio is string
+        && request.resource.data.bio.size() >= 20
+        && request.resource.data.bio.size() <= 800
+        && request.resource.data.acceptedTerms == true;
+      allow delete: if signedIn() && request.auth.uid == userId;
+    }
+
+    match /artworks/{artworkId} {
+      allow read: if true;
+      allow create: if verified()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.ownerEmail == request.auth.token.email
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 120
+        && request.resource.data.artist is string
+        && request.resource.data.artist.size() >= 1
+        && request.resource.data.artist.size() <= 100
+        && request.resource.data.description is string
+        && request.resource.data.description.size() >= 20
+        && request.resource.data.description.size() <= 1200
+        && request.resource.data.priceCents is int
+        && request.resource.data.priceCents >= 100
+        && request.resource.data.priceCents <= 100000000
+        && request.resource.data.imageDataUrl is string
+        && request.resource.data.imageDataUrl.size() < 500000
+        && request.resource.data.imageDataUrl.matches('data:image/jpeg;base64,[A-Za-z0-9+/=]+');
+      allow update: if false;
+      allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
+    }
+  }
+}
