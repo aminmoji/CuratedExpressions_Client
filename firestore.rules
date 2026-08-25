@@ -7,46 +7,118 @@ service cloud.firestore {
     }
 
     function verified() {
-      return signedIn() && request.auth.token.email_verified == true;
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email is string;
+    }
+
+    function isAdmin() {
+      return verified() && request.auth.token.email == "aminmoj@gmail.com";
+    }
+
+    function validProfile(data) {
+      return data.keys().hasOnly([
+          "email", "displayName", "location", "website", "instagram",
+          "bio", "acceptedTerms", "createdAt", "updatedAt"
+        ])
+        && data.email == request.auth.token.email
+        && data.displayName is string
+        && data.displayName.size() >= 2
+        && data.displayName.size() <= 100
+        && data.location is string
+        && data.location.size() <= 100
+        && data.website is string
+        && data.website.size() <= 240
+        && data.instagram is string
+        && data.instagram.size() <= 30
+        && data.instagram.matches("^[A-Za-z0-9._]*$")
+        && data.bio is string
+        && data.bio.size() >= 20
+        && data.bio.size() <= 800
+        && data.acceptedTerms == true
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function validArtwork(data) {
+      return data.keys().hasOnly([
+          "slug", "title", "artist", "medium", "year", "dimensions",
+          "priceCents", "description", "imageDataUrl", "ownerUid",
+          "status", "createdAt", "updatedAt"
+        ])
+        && data.slug is string
+        && data.slug.size() >= 3
+        && data.slug.size() <= 180
+        && data.slug.matches("^[a-z0-9-]+$")
+        && data.title is string
+        && data.title.size() >= 1
+        && data.title.size() <= 120
+        && data.artist is string
+        && data.artist.size() >= 1
+        && data.artist.size() <= 100
+        && data.medium is string
+        && data.medium.size() >= 1
+        && data.medium.size() <= 100
+        && data.year is int
+        && data.year >= 1900
+        && data.year <= 2100
+        && data.dimensions is string
+        && data.dimensions.size() >= 1
+        && data.dimensions.size() <= 80
+        && data.priceCents is int
+        && data.priceCents >= 100
+        && data.priceCents <= 100000000
+        && data.description is string
+        && data.description.size() >= 20
+        && data.description.size() <= 1200
+        && data.imageDataUrl is string
+        && data.imageDataUrl.size() < 500000
+        && data.imageDataUrl.matches("^data:image/jpeg;base64,[A-Za-z0-9+/=]+$")
+        && data.ownerUid == request.auth.uid
+        && data.status == "pending"
+        && data.createdAt == request.time
+        && data.updatedAt == request.time;
     }
 
     match /artist_profiles/{userId} {
-      allow read: if signedIn() && request.auth.uid == userId;
-      allow create, update: if verified()
+      allow read: if signedIn() && (request.auth.uid == userId || isAdmin());
+
+      allow create: if verified()
         && request.auth.uid == userId
-        && request.resource.data.email == request.auth.token.email
-        && request.resource.data.displayName is string
-        && request.resource.data.displayName.size() >= 2
-        && request.resource.data.displayName.size() <= 100
-        && request.resource.data.bio is string
-        && request.resource.data.bio.size() >= 20
-        && request.resource.data.bio.size() <= 800
-        && request.resource.data.acceptedTerms == true;
-      allow delete: if signedIn() && request.auth.uid == userId;
+        && validProfile(request.resource.data)
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+
+      allow update: if verified()
+        && request.auth.uid == userId
+        && validProfile(request.resource.data)
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if signedIn() && (request.auth.uid == userId || isAdmin());
     }
 
     match /artworks/{artworkId} {
-      allow read: if true;
+      allow read: if resource.data.status == "approved"
+        || (signedIn() && resource.data.ownerUid == request.auth.uid)
+        || isAdmin();
+
       allow create: if verified()
-        && request.resource.data.ownerUid == request.auth.uid
-        && request.resource.data.ownerEmail == request.auth.token.email
-        && request.resource.data.title is string
-        && request.resource.data.title.size() >= 1
-        && request.resource.data.title.size() <= 120
-        && request.resource.data.artist is string
-        && request.resource.data.artist.size() >= 1
-        && request.resource.data.artist.size() <= 100
-        && request.resource.data.description is string
-        && request.resource.data.description.size() >= 20
-        && request.resource.data.description.size() <= 1200
-        && request.resource.data.priceCents is int
-        && request.resource.data.priceCents >= 100
-        && request.resource.data.priceCents <= 100000000
-        && request.resource.data.imageDataUrl is string
-        && request.resource.data.imageDataUrl.size() < 500000
-        && request.resource.data.imageDataUrl.matches('data:image/jpeg;base64,[A-Za-z0-9+/=]+');
-      allow update: if false;
-      allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
+        && artworkId.matches("^" + request.auth.uid + "_(0|1|2|3|4|5|6|7|8|9|10|11)$")
+        && validArtwork(request.resource.data);
+
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["status", "updatedAt"])
+        && request.resource.data.status in ["pending", "approved", "rejected"]
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if signedIn()
+        && (resource.data.ownerUid == request.auth.uid || isAdmin());
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
