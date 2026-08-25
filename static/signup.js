@@ -31,8 +31,8 @@ function entryView() {
         <p class="signup-lead">Create a free artist profile with any email address, or continue with Google.</p>
         <form class="auth-form" id="create-account-form">
           <label>Email address<input name="email" type="email" required autocomplete="email" /></label>
-          <label>Password<input name="password" type="password" required minlength="8" autocomplete="new-password" /></label>
-          <label>Confirm password<input name="passwordConfirmation" type="password" required minlength="8" autocomplete="new-password" /></label>
+          <label>Password<input name="password" type="password" required minlength="12" autocomplete="new-password" /><small>12+ characters with uppercase, lowercase, number and symbol</small></label>
+          <label>Confirm password<input name="passwordConfirmation" type="password" required minlength="12" autocomplete="new-password" /></label>
           <button type="submit">Create account <span aria-hidden="true">↗</span></button>
         </form>
         <div class="auth-divider"><span>or</span></div>
@@ -50,7 +50,10 @@ function entryView() {
     const data = new FormData(form);
     const password = String(data.get("password") || "");
     const confirmation = String(data.get("passwordConfirmation") || "");
-    if (password.length < 8) return feedback(feedbackRoot, { error: "Use a password with at least 8 characters." });
+    if (password.length < 12) return feedback(feedbackRoot, { error: "Use a password with at least 12 characters." });
+    if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+      return feedback(feedbackRoot, { error: "Include uppercase, lowercase, a number and a symbol." });
+    }
     if (password !== confirmation) return feedback(feedbackRoot, { error: "The passwords do not match." });
     button.disabled = true;
     button.firstChild.textContent = "Creating account… ";
