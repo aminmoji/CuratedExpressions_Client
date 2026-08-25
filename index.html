@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Curated Expressions — Art worth living with</title>
+    <meta name="description" content="A considered collection of original art from independent makers." />
+    <link rel="canonical" href="https://aminmoji.github.io/CuratedExpressions_Client/" />
+    <meta property="og:title" content="Curated Expressions" />
+    <meta property="og:description" content="Art worth living with." />
+    <link rel="icon" href="./public/favicon.svg" />
+    <link rel="stylesheet" href="./app/globals.css" />
+  </head>
+  <body>
+    <main>
+      <header class="site-header">
+        <a class="wordmark" href="./" aria-label="Curated Expressions home">Curated<span>Expressions</span></a>
+        <nav aria-label="Primary navigation">
+          <a href="#collection">Collection</a>
+          <a href="#approach">Our approach</a>
+          <a href="./signup/">Join as artist</a>
+          <a class="studio-link" href="./studio/">Artist studio</a>
+        </nav>
+      </header>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Independent art · thoughtfully selected</p>
+          <h1 id="hero-title">Original work.<br />Chosen slowly.</h1>
+          <p class="hero-intro">A small, considered collection of original art from independent makers—selected for the spaces where life actually happens.</p>
+          <a class="primary-action" href="#collection">Explore the collection <span aria-hidden="true">↘</span></a>
+        </div>
+        <figure class="hero-art">
+          <img src="https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=1600&q=90" alt="Expressive botanical painting in soft blues, green, and ochre" />
+          <figcaption><span>New this week</span><span>01 / 05</span></figcaption>
+        </figure>
+      </section>
+
+      <section class="collection" id="collection" aria-labelledby="collection-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">The current edit</p><h2 id="collection-title">Works with a point of view</h2></div>
+          <p>Limited runs and one-of-one pieces, presented with the details you need and none of the gallery pressure.</p>
+        </div>
+        <div class="art-grid" id="art-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="manifesto" id="approach" aria-labelledby="approach-title">
+        <p class="eyebrow">Why Curated Expressions</p>
+        <h2 id="approach-title">Art should feel personal before it feels important.</h2>
+        <div class="manifesto-grid">
+          <p>We focus on original work with presence: pieces that reward a second look and make a room feel unmistakably yours.</p>
+          <p>Every listing connects you directly to the story, materials, and maker behind the work. No mystery. No velvet rope.</p>
+        </div>
+      </section>
+
+      <section class="artist-invite" aria-labelledby="artist-invite-title">
+        <div><p class="eyebrow">For artists</p><h2 id="artist-invite-title">A quieter place<br />to show your work.</h2></div>
+        <div>
+          <p>Create a free profile and publish original work in a presentation built around the art—not an algorithm.</p>
+          <a class="studio-signin" href="./signup/">Join Curated Expressions <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+
+      <footer>
+        <a class="wordmark" href="./">Curated<span>Expressions</span></a>
+        <p>Art worth living with.</p>
+        <p>© 2026 Curated Expressions</p>
+      </footer>
+    </main>
+    <script type="module" src="./static/gallery.js"></script>
+  </body>
+</html>
