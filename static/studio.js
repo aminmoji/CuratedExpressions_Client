@@ -3,7 +3,7 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import {
-  addDoc,
+  setDoc,
   collection,
   deleteDoc,
   doc,
@@ -69,7 +69,7 @@ function renderWorkList() {
     link.textContent = work.title;
     title.append(link);
     const detail = document.createElement("p");
-    detail.textContent = `${work.medium} · ${formatCad(work.priceCents)}`;
+    detail.textContent = `${work.medium} · ${formatCad(work.priceCents)} · ${work.status === "approved" ? "Live" : "Pending review"}`;
     copy.append(title, detail);
     const remove = document.createElement("button");
     remove.type = "button";
@@ -129,7 +129,11 @@ async function publishWork(event) {
     const imageDataUrl = await compressArtwork(data.get("image"));
     button.firstChild.textContent = "Publishing… ";
     const title = String(data.get("title") || "").trim();
-    const created = await addDoc(collection(db, "artworks"), {
+    const usedSlots = new Set(works.map((work) => Number(String(work.id).split("_").at(-1))));
+    const slot = Array.from({ length: 12 }, (_, index) => index).find((index) => !usedSlots.has(index));
+    if (slot === undefined) throw new Error("You can have up to 12 active submissions. Remove one before adding another.");
+    const artworkRef = doc(db, "artworks", `${activeUser.uid}_${slot}`);
+    await setDoc(artworkRef, {
       slug: `${slugify(title)}-${Date.now().toString(36)}`,
       title,
       artist: String(data.get("artist") || "").trim(),
@@ -140,23 +144,24 @@ async function publishWork(event) {
       description: String(data.get("description") || "").trim(),
       imageDataUrl,
       ownerUid: activeUser.uid,
-      ownerEmail: activeUser.email,
+      status: "pending",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
     works.unshift({
-      id: created.id,
+      id: artworkRef.id,
       title,
       medium: String(data.get("medium") || "").trim(),
       priceCents: Math.round(Number(data.get("price")) * 100),
       imageDataUrl,
+      status: "pending",
       createdAt: { toMillis: () => Date.now() },
     });
     renderWorkList();
     form.reset();
     form.querySelector("input[name=artist]").value = activeProfile.displayName;
     form.querySelector("input[name=year]").value = new Date().getFullYear();
-    feedback(feedbackRoot, { message: `“${title}” is now live in the collection.` });
+    feedback(feedbackRoot, { message: `“${title}” was submitted securely and is awaiting review.` });
   } catch (error) {
     feedback(feedbackRoot, { error: firebaseErrorMessage(error) });
   } finally {
@@ -184,7 +189,7 @@ function workspace() {
     <div class="studio-workspace">
       <div class="studio-welcome">
         <p class="eyebrow">Artist studio</p><h1>Welcome,<br />${escapeHtml(firstName)}.</h1>
-        <p>Add an original work to the live collection. You can remove your own listings at any time.</p>
+        <p>Submit an original work for review. Approved listings appear in the public collection, and you can remove your own submissions at any time.</p>
       </div>
       <form class="publish-form" id="publish-form">
         <div class="form-heading"><span>New listing</span><strong>01</strong></div>
