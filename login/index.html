@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Artist Sign In | Curated Expressions</title>
+    <meta name="description" content="Sign in to manage your Curated Expressions artist studio." />
+    <link rel="canonical" href="https://aminmoji.github.io/CuratedExpressions_Client/login/" />
+    <link rel="icon" href="../public/favicon.svg" />
+    <link rel="stylesheet" href="../app/globals.css" />
+  </head>
+  <body>
+    <main class="signup-page">
+      <header class="site-header">
+        <a class="wordmark" href="../">Curated<span>Expressions</span></a>
+        <nav aria-label="Sign-in navigation">
+          <a href="../#collection">View collection</a>
+          <a class="studio-link" href="../signup/">Join as an artist</a>
+        </nav>
+      </header>
+      <section class="auth-page-content">
+        <div class="auth-heading">
+          <p class="eyebrow">Artist studio</p>
+          <h1>Welcome<br />back.</h1>
+          <p>Sign in with your email and password, or continue with Google.</p>
+        </div>
+        <div class="auth-card">
+          <form class="auth-form" id="login-form">
+            <label>Email address<input name="email" type="email" required autocomplete="email" /></label>
+            <label>Password<input name="password" type="password" required autocomplete="current-password" /></label>
+            <button type="submit">Sign in <span aria-hidden="true">↗</span></button>
+          </form>
+          <button class="text-button reset-button" id="reset-password" type="button">Forgot your password?</button>
+          <div class="auth-divider"><span>or</span></div>
+          <button class="google-button" id="google-login" type="button"><span class="google-mark" aria-hidden="true">G</span> Continue with Google</button>
+          <div class="form-feedback" id="login-feedback" aria-live="polite"></div>
+          <p class="signup-privacy">New here? <a href="../signup/">Create an artist account.</a></p>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="../static/login.js"></script>
+  </body>
+</html>
